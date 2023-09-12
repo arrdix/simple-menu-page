@@ -71,65 +71,63 @@ const menu = [
     img: "./images/item-9.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
+  {
+  id: 10,
+  title: "steak dinner",
+  category: "dinner",
+  price: 39.99,
+  img: "./images/item-10.jpeg",
+  desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
+  },
+  {
+  id: 11,
+  title: "Pecel Lele",
+  category: "Locals",
+  price: 1.99,
+  img: "./images/item-10.jpeg",
+  desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
+},
 ];
 
 const section = document.querySelector('.section-center');
+const btnCon = document.querySelector('.btn-container');
 const button = document.querySelectorAll('.filter-btn');
 
-window.addEventListener('DOMContentLoaded', function(displayMenuList) {
+window.addEventListener('DOMContentLoaded', function() {
   displayMenu(menu);
+  displayButton();
 });
 
-// button.forEach(function(btnFilter) {
-//   btnFilter.addEventListener('click', function(click) {
-//     const newClick = click.currentTarget.textContent;
-//       if(newClick == 'breakfast') {
-//         displayMenu(breakfast);
-//       } else if (newClick == 'lunch') {
-//         displayMenu(lunch);
-//       } else if (newClick == 'shakes') {
-//         displayMenu(shakes);
-//       } else if (newClick == 'dinner') {
-//         displayMenu(dinner);
-//       } else {
-//         displayMenu(menu);
-//       }
-//   });
-// });
+function displayButton() {
+  const catRed = menu.reduce(function(values, item){
+    if (!values.includes(item.category)) {
+      values.push(item.category);
+    };
+    return values;
+  },['all']);
+  const catList = catRed.map(function(catMap) {
+    return `
+        <button class="filter-btn" type="button" data-cat="${catMap}">${catMap}</button>
+        `;   
+  }).join('');
+  btnCon.innerHTML = catList;
 
-let btn = button.forEach(btnFilter => {
-  btnFilter.addEventListener('click', clicks => {
-    let newClick = clicks.currentTarget.textContent;
-
-    if (newClick == 'breakfast') {
-      displayMenu(breakfast);
-    } else if (newClick == 'lunch') {
-      displayMenu(lunch);
-    } else if (newClick == 'shakes') {
-      displayMenu(shakes);
-    } else if (newClick == 'dinner') {
-      displayMenu(dinner);
-    } else {
-      displayMenu(menu);
-    }
-
-  })
-});
-
-let breakfast = menu.filter(function(menuArrFilter) {
-  return menuArrFilter.category == 'breakfast';
-});
-
-let lunch = menu.filter(function(menuArrFilter) {
-  return menuArrFilter.category == 'lunch';
-});
-
-let shakes = menu.filter(function(menuArrFilter) {
-  return menuArrFilter.category == 'shakes';
-});
-let dinner = menu.filter(function(menuArrFilter) {
-  return menuArrFilter.category == 'dinner';
-});
+  const button = document.querySelectorAll('.filter-btn');
+  
+  button.forEach(function(btnFilter) {
+    btnFilter.addEventListener('click', function(click) {
+      const newClick = click.currentTarget.dataset.cat;
+      const catFilter = menu.filter(function(categoryFilter) {
+        return categoryFilter.category === newClick;
+      });
+      if (newClick === 'all') {
+        displayMenu(menu);
+      } else {
+        displayMenu(catFilter);
+      }
+    });
+  });
+};
 
 function displayMenu(menuArr) {
   let menuList = menuArr.map(function(menuMap) {
@@ -150,3 +148,4 @@ function displayMenu(menuArr) {
   menuList = menuList.join('');
   section.innerHTML = menuList;
 };
+
